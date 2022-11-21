@@ -6,8 +6,8 @@
     app:startDestination="@id/main">
     <fragment
         android:id="@+id/main"
-        android:name="ru.zfix27r.todo.ui.MainFragment"
-        tools:layout="@layout/fragment_main" >
+        android:name="ru.zfix27r.todo.ui.ListFragment"
+        tools:layout="@layout/fragment_list" >
         <action
             android:id="@+id/action_main_to_detail"
             app:destination="@id/detail" />

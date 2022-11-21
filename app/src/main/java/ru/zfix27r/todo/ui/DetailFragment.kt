@@ -2,45 +2,32 @@ package ru.zfix27r.todo.ui
 
 import android.app.DatePickerDialog
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import ru.zfix27r.todo.data.MainRepositoryImpl
+import androidx.fragment.app.viewModels
+import by.kirich1409.viewbindingdelegate.viewBinding
+import ru.zfix27r.todo.R
 import ru.zfix27r.todo.databinding.FragmentDetailBinding
-import ru.zfix27r.todo.ui.MainFragment.Companion.NOTE_POSITION
+import ru.zfix27r.todo.domain.NoteForDetail
 import java.util.*
 
-class DetailFragment : Fragment() {
-    private var _binding: FragmentDetailBinding? = null
-    private val binding get() = _binding!!
-    private val vm = MainViewModel(MainRepositoryImpl())
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentDetailBinding.inflate(inflater, container, false)
-
-        return binding.root
-    }
+class DetailFragment : Fragment(R.layout.fragment_detail) {
+    private val binding by viewBinding(FragmentDetailBinding::bind)
+    private val viewModel by viewModels<DetailViewModel> { DetailViewModel.Factory }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        arguments?.let {
-            val position = it.getInt(NOTE_POSITION)
-            binding.title.text = vm.notes[position].title
-            binding.description.text = vm.notes[position].description
-            binding.date.text = vm.notes[position].date
-            binding.date.setOnClickListener {
-                datePicker(vm.notes[position].date)
-            }
+
+        viewModel.note.observe(viewLifecycleOwner) {
+            showNoteDetail(it)
         }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+    private fun showNoteDetail(note: NoteForDetail) {
+        binding.title.text = note.title
+        binding.description.text = note.description
+        binding.date.text = note.date
+        binding.date.setOnClickListener { datePicker(note.date) }
     }
 
     private fun datePicker(date: String) {

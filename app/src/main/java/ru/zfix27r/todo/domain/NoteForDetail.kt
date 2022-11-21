@@ -1,6 +1,6 @@
 package ru.zfix27r.todo.domain
 
-data class Note(
+data class NoteForDetail(
     val id: Long,
     val title: String,
     val description: String,
