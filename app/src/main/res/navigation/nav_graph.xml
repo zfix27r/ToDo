@@ -16,4 +16,11 @@
         android:id="@+id/detail"
         android:name="ru.zfix27r.todo.ui.DetailFragment"
         tools:layout="@layout/fragment_detail" />
+    <fragment
+        android:id="@+id/settings"
+        android:name="ru.zfix27r.todo.ui.SettingsFragment"
+        android:label="@string/action_settings" />
+    <action
+        android:id="@+id/action_global_settings"
+        app:destination="@id/settings" />
 </navigation>
