@@ -18,11 +18,16 @@ class DetailFragment : Fragment(R.layout.fragment_detail) {
         binding.viewModel = viewModel
 
         binding.title.setOnFocusChangeListener { _, b ->
-            if (!b) viewModel.saveNote(title = binding.title.text.toString())
+            if (!b) viewModel.noteEdit.title = binding.title.text.toString()
         }
 
         binding.description.setOnFocusChangeListener { _, b ->
-            if (!b) viewModel.saveNote(description = binding.description.text.toString())
+            if (!b) viewModel.noteEdit.description = binding.description.text.toString()
         }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        viewModel.saveNote()
     }
 }

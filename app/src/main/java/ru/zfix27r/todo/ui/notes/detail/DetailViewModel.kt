@@ -28,6 +28,8 @@ class DetailViewModel(
     private var _response: MutableLiveData<ResponseModel> = MutableLiveData()
     val response: LiveData<ResponseModel> = _response
 
+    val noteEdit: NoteEditModel = NoteEditModel()
+
     init {
         if (noteId > 0L) loadNote()
     }
@@ -44,13 +46,13 @@ class DetailViewModel(
         }
     }
 
-    fun saveNote(title: String? = null, description: String? = null) {
+    fun saveNote() {
         note.value?.let {
             viewModelScope.launch(Dispatchers.IO) {
                 val saveNoteReqModel = SaveNoteReqModel(
                     id = noteId,
-                    title = title ?: it.title,
-                    description = description ?: it.description
+                    title = noteEdit.title ?: it.title,
+                    description = noteEdit.description ?: it.description
                 )
                 saveNoteUseCase.execute(saveNoteReqModel).collect {
                     _response.postValue(it)
