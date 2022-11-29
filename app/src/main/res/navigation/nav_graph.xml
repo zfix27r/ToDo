@@ -4,23 +4,39 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
     app:startDestination="@id/main">
-    <fragment
-        android:id="@+id/main"
-        android:name="ru.zfix27r.todo.ui.ListFragment"
-        tools:layout="@layout/fragment_list" >
-        <action
-            android:id="@+id/action_main_to_detail"
-            app:destination="@id/detail" />
-    </fragment>
-    <fragment
-        android:id="@+id/detail"
-        android:name="ru.zfix27r.todo.ui.DetailFragment"
-        tools:layout="@layout/fragment_detail" />
-    <fragment
-        android:id="@+id/settings"
-        android:name="ru.zfix27r.todo.ui.SettingsFragment"
-        android:label="@string/action_settings" />
+
     <action
         android:id="@+id/action_global_settings"
         app:destination="@id/settings" />
+    <action
+        android:id="@+id/action_global_help"
+        app:destination="@id/help" />
+
+    <fragment
+        android:id="@+id/main"
+        android:name="ru.zfix27r.todo.ui.notes.NotesFragment"
+        android:label=""
+        tools:layout="@layout/fragment_notes">
+        <action
+            android:id="@+id/action_main_to_detail"
+            app:destination="@id/detail"
+            app:restoreState="true" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/detail"
+        android:name="ru.zfix27r.todo.ui.notes.detail.DetailFragment"
+        android:label=""
+        tools:layout="@layout/fragment_detail" />
+
+    <fragment
+        android:id="@+id/settings"
+        android:name="ru.zfix27r.todo.ui.settings.SettingsFragment"
+        android:label="@string/action_settings" />
+
+    <fragment
+        android:id="@+id/help"
+        android:name="ru.zfix27r.todo.ui.help.HelpFragment"
+        android:label=""
+        tools:layout="@layout/fragment_help" />
 </navigation>

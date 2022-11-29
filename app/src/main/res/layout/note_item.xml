@@ -1,17 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/title"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    android:layout_marginBottom="8dp"
-    android:background="#A5C5F6"
-    android:gravity="center_vertical"
-    android:minHeight="48dp"
-    android:padding="8dp"
-    android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent"
-    tools:text="Активити" />
+    <data>
+
+        <variable
+            name="note"
+            type="ru.zfix27r.todo.domain.model.GetNotesResDataModel.Note" />
+    </data>
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:minHeight="48dp"
+        android:padding="8dp"
+        android:text="@{note.title}"
+        android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Активити" />
+</layout>
