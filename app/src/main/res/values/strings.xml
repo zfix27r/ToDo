@@ -50,4 +50,12 @@
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="item_delete">Удалить</string>
+
+    <string name="notes_menu_sort_key">notes_menu_sort</string>
+    <string name="notes_menu_sort_default">По умолчанию</string>
+    <string name="notes_menu_sort_alphabetically">По порядку</string>
+    <string name="notes_menu_sort_alphabetically_reverse">В обраном порядке</string>
+    <string name="notes_menu_sort_date">По дате обновления</string>
+    <string name="error_unknow">Неизвестная ошибка</string>
 </resources>

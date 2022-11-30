@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/sort_default"
+        android:title="@string/notes_menu_sort_default" />
+    <item
+        android:id="@+id/sort_abc"
+        android:title="@string/notes_menu_sort_alphabetically" />
+    <item
+        android:id="@+id/sort_abc_reverse"
+        android:title="@string/notes_menu_sort_alphabetically_reverse" />
+    <item
+        android:id="@+id/sort_date"
+        android:title="@string/notes_menu_sort_date" />
+</menu>

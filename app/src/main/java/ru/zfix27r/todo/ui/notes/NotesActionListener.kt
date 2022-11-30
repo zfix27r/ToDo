@@ -1,5 +1,5 @@
 package ru.zfix27r.todo.ui.notes
 
-interface NoteListActionListener {
+interface NotesActionListener {
     fun onDetail(note: Note)
 }
