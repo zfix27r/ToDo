@@ -3,4 +3,47 @@
     <string name="action_settings">Настройки</string>
 
     <string name="note_add">Добавить заметку</string>
+
+    <string name="settings_view_title">Параметры отображения</string>
+    <string name="settings_reminder">Напоминания</string>
+
+    <!-- Messages Preferences -->
+    <string name="signature_title">Your signature</string>
+    <string name="reply_title">Default reply action</string>
+
+    <!-- Sync Preferences -->
+    <string name="sync_title">Sync email periodically</string>
+    <string name="attachment_title">Download incoming attachments</string>
+    <string name="attachment_summary_on">Automatically download attachments for incoming emails
+    </string>
+    <string name="attachment_summary_off">Only download attachments when manually requested</string>
+
+    <string name="theme_title">Тема</string>
+    <string name="theme_key">settings_theme_key</string>
+    <string-array name="theme_list">
+        <item>@string/theme_light_name</item>
+        <item>@string/theme_dark_name</item>
+        <item>@string/theme_default_name</item>
+    </string-array>
+    <string name="theme_light_name">Светлая</string>
+    <string name="theme_dark_name">Темная</string>
+    <string name="theme_default_name">По умолчанию</string>
+
+    <string name="reminder_morning_title">утром</string>
+    <string name="reminder_morning_hour_key">settings_reminder_morning_hour_key</string>
+    <string name="reminder_morning_hour_default_value">9</string>
+    <string name="reminder_morning_minute_key">settings_reminder_morning_minute_key</string>
+    <string name="reminder_morning_minute_default_value">0</string>
+
+    <string name="reminder_noon_title">днем</string>
+    <string name="reminder_noon_hour_key">settings_reminder_noon_hour_key</string>
+    <string name="reminder_noon_hour_default_value">14</string>
+    <string name="reminder_noon_minute_key">settings_reminder_noon_minute_key</string>
+    <string name="reminder_noon_minute_default_value">0</string>
+
+    <string name="reminder_evening">вечером</string>
+    <string name="reminder_evening_hour_key">settings_reminder_evening_hour_key</string>
+    <string name="reminder_evening_hour_default_value">18</string>
+    <string name="reminder_evening_minute_key">settings_reminder_evening_minute_key</string>
+    <string name="reminder_evening_minute_default_value">0</string>
 </resources>

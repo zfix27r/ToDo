@@ -45,6 +45,8 @@ android {
 }
 
 dependencies {
+    implementation 'androidx.preference:preference:1.2.0'
+    implementation 'androidx.preference:preference-ktx:1.2.0'
     kapt "com.android.databinding:compiler:$databindingVersion"
 
     implementation "androidx.core:core-ktx:$androidxCoreVersion"
