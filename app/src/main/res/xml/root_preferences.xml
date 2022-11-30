@@ -1,0 +1,26 @@
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+    <PreferenceCategory app:title="@string/settings_view_title">
+        <ListPreference
+            app:defaultValue="@string/theme_default_name"
+            app:entries="@array/theme_list"
+            app:entryValues="@array/theme_list"
+            app:key="@string/theme_key"
+            app:title="@string/theme_title"
+            app:useSimpleSummaryProvider="true" />
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/settings_reminder">
+        <ru.zfix27r.todo.ui.settings.TimePickerMorningPreference
+            app:selectable="true"
+            app:title="@string/reminder_morning_title"
+            app:widgetLayout="@layout/time_picker_row" />
+        <ru.zfix27r.todo.ui.settings.TimePickerNoonPreference
+            app:selectable="true"
+            app:title="@string/reminder_noon_title"
+            app:widgetLayout="@layout/time_picker_row" />
+        <ru.zfix27r.todo.ui.settings.TimePickerEveningPreference
+            app:selectable="true"
+            app:title="@string/reminder_evening"
+            app:widgetLayout="@layout/time_picker_row" />
+    </PreferenceCategory>
+</PreferenceScreen>
