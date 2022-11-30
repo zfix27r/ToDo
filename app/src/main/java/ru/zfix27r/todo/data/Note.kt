@@ -1,8 +1,8 @@
-package ru.zfix27r.todo
+package ru.zfix27r.todo.data
 
 data class Note(
     val id: Long,
     val title: String,
     val description: String,
-    val created_at: Long
+    val date: String
 )
