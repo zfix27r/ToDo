@@ -18,9 +18,9 @@
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragment_container_detail"
-        android:name="ru.zfix27r.todo.ui.notes.detail.DetailFragment"
+        android:name="ru.zfix27r.todo.ui.notes.detail.NoteDetailFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        tools:layout="@layout/fragment_detail" />
+        tools:layout="@layout/fragment_note_detail" />
 </LinearLayout>

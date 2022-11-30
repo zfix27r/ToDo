@@ -11,13 +11,15 @@ import ru.zfix27r.todo.domain.model.GetNoteResModel
 import ru.zfix27r.todo.domain.model.RequestModel
 import ru.zfix27r.todo.domain.model.ResponseModel
 import ru.zfix27r.todo.domain.model.SaveNoteReqModel
+import ru.zfix27r.todo.domain.usecase.DeleteNoteUseCase
 import ru.zfix27r.todo.domain.usecase.GetNoteUseCase
 import ru.zfix27r.todo.domain.usecase.SaveNoteUseCase
 import ru.zfix27r.todo.ui.notes.NotesViewModel.Companion.NOTE_ID
 
-class DetailViewModel(
+class NoteDetailViewModel(
     private val getNoteUseCase: GetNoteUseCase,
     private val saveNoteUseCase: SaveNoteUseCase,
+    private val deleteNoteUseCase: DeleteNoteUseCase,
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
     private val noteId = savedStateHandle.get<Long>(NOTE_ID) ?: 0
@@ -61,16 +63,24 @@ class DetailViewModel(
         }
     }
 
+    fun deleteNote() = viewModelScope.launch(Dispatchers.IO) {
+        _note = MutableLiveData() //TODO для отключения сохранения после удаления
+
+        val requestModel = RequestModel(noteId)
+        deleteNoteUseCase.execute(requestModel).collect {
+            _response.postValue(it)
+        }
+    }
 
     companion object {
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
                 val savedStateHandle = createSavedStateHandle()
-                val repo =
-                    (this[APPLICATION_KEY] as ToDo).repository
-                DetailViewModel(
-                    GetNoteUseCase(repo),
-                    SaveNoteUseCase(repo),
+                val noteRepository = (this[APPLICATION_KEY] as ToDo).noteRepository
+                NoteDetailViewModel(
+                    getNoteUseCase = GetNoteUseCase(noteRepository),
+                    saveNoteUseCase = SaveNoteUseCase(noteRepository),
+                    deleteNoteUseCase = DeleteNoteUseCase(noteRepository),
                     savedStateHandle = savedStateHandle
                 )
             }

@@ -8,10 +8,10 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import ru.zfix27r.todo.R
 import ru.zfix27r.todo.databinding.NoteItemBinding
-import ru.zfix27r.todo.ui.notes.NoteListAdapter.*
+import ru.zfix27r.todo.ui.notes.NotesAdapter.*
 
-class NoteListAdapter(
-    private val actionListener: NoteListActionListener,
+class NotesAdapter(
+    private val actionListener: NotesActionListener,
     private val contextListener: View.OnCreateContextMenuListener
 ) :
     ListAdapter<Note, NotesViewHolder>(DiffCallback()),
@@ -25,7 +25,7 @@ class NoteListAdapter(
 
         binding.title.setOnClickListener(this)
         binding.title.setOnCreateContextMenuListener(contextListener)
-    println("create")
+
         return NotesViewHolder(binding)
     }
 

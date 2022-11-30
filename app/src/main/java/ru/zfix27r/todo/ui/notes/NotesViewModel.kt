@@ -7,13 +7,18 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import ru.zfix27r.todo.ToDo
-import ru.zfix27r.todo.domain.model.GetNotesResDataModel
-import ru.zfix27r.todo.domain.model.GetNotesResTypeModel
-import ru.zfix27r.todo.domain.model.ResponseModel
+import ru.zfix27r.todo.domain.common.SortType
+import ru.zfix27r.todo.domain.model.*
+import ru.zfix27r.todo.domain.usecase.DeleteNoteUseCase
 import ru.zfix27r.todo.domain.usecase.GetNotesUseCase
+import ru.zfix27r.todo.domain.usecase.preference.GetActiveSortMenuUseCase
+import ru.zfix27r.todo.domain.usecase.preference.SaveActiveSortNotesUseCase
 
 class NotesViewModel(
     private val getNotesUseCase: GetNotesUseCase,
+    private val deleteNoteUseCase: DeleteNoteUseCase,
+    private val getActiveSortMenuUseCase: GetActiveSortMenuUseCase,
+    private val saveActiveSortMenuUseCase: SaveActiveSortNotesUseCase,
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
     private val _notes: MutableLiveData<GetNotesResDataModel> = MutableLiveData()
@@ -22,21 +27,36 @@ class NotesViewModel(
     private var _response: MutableLiveData<ResponseModel> = MutableLiveData()
     val response: LiveData<ResponseModel> = _response
 
+    var sort: SortType = getActiveSortMenuUseCase.execute()
+        set(value) {
+            field = value
+            loadNotes()
+        }
+
     private var selectedNote: Note? = null
 
     init {
         loadNotes()
     }
 
-    private fun loadNotes() {
-        viewModelScope.launch(Dispatchers.IO) {
-            getNotesUseCase.execute().collect {
-                when(it) {
-                    is GetNotesResDataModel -> _notes.postValue(it)
-                    is GetNotesResTypeModel -> _response.postValue(it.toResponseModel())
-                }
+    fun loadNotes() = viewModelScope.launch(Dispatchers.IO) {
+        getNotesUseCase.execute(GetNotesReqModel(sort)).collect {
+            when (it) {
+                is GetNotesResDataModel -> _notes.postValue(it)
+                is GetNotesResTypeModel -> _response.postValue(it.toResponseModel())
             }
         }
+    }
+
+    fun deleteNote(note: Note) = viewModelScope.launch(Dispatchers.IO) {
+        val requestModel = RequestModel(note.id)
+        deleteNoteUseCase.execute(requestModel)
+        // TODO убрать загрузку после подключения румы
+        loadNotes()
+    }
+
+    fun savedState() {
+        saveActiveSortMenuUseCase.execute(sort)
     }
 
     companion object {
@@ -45,9 +65,13 @@ class NotesViewModel(
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
                 val savedStateHandle = createSavedStateHandle()
-                val repo = (this[APPLICATION_KEY] as ToDo).repository
+                val noteRepository = (this[APPLICATION_KEY] as ToDo).noteRepository
+                val preferenceRepository = (this[APPLICATION_KEY] as ToDo).preferenceRepository
                 NotesViewModel(
-                    getNotesUseCase = GetNotesUseCase(repo),
+                    getNotesUseCase = GetNotesUseCase(noteRepository),
+                    deleteNoteUseCase = DeleteNoteUseCase(noteRepository),
+                    getActiveSortMenuUseCase = GetActiveSortMenuUseCase(preferenceRepository),
+                    saveActiveSortMenuUseCase = SaveActiveSortNotesUseCase(preferenceRepository),
                     savedStateHandle = savedStateHandle
                 )
             }
