@@ -1,13 +1,13 @@
 package ru.zfix27r.todo.data
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.liveData
-import ru.zfix27r.todo.domain.NoteForDetail
-import ru.zfix27r.todo.domain.NoteForList
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import ru.zfix27r.todo.domain.Repository
+import ru.zfix27r.todo.domain.common.ResponseType
+import ru.zfix27r.todo.domain.model.*
 
 class RepositoryImpl : Repository {
-    private val notes = listOf(
+    private val notes: MutableList<Note> = mutableListOf(
         Note(
             id = 1,
             title = "Активити",
@@ -29,21 +29,40 @@ class RepositoryImpl : Repository {
     )
 
 
-    override fun getNotes(): LiveData<List<NoteForList>> {
-        return liveData {
-            emit(notes.map { NoteForList(id = it.id, title = it.title) })
+    override fun getNotes(): Flow<GetNotesResModel> {
+        return flow {
+            emit(
+                GetNotesResDataModel(
+                    notes.map { GetNotesResDataModel.Note(id = it.id, title = it.title) }
+                )
+            )
         }
     }
 
-    override fun getNote(id: Long): LiveData<NoteForDetail> {
-        return liveData {
-            for (note in notes) if (note.id == id)
-                emit(NoteForDetail(
-                    id = note.id,
-                    title = note.title,
-                    description = note.description,
-                    date = note.date
-                ))
+    override fun getNote(requestModel: RequestModel): Flow<GetNoteResModel> {
+        return flow {
+            for (note in notes) if (note.id == requestModel.id)
+                emit(
+                    GetNoteResModel.Data(
+                        id = note.id,
+                        title = note.title,
+                        description = note.description,
+                        date = note.date
+                    )
+                )
         }
+    }
+
+    override fun saveNote(saveNoteReqModel: SaveNoteReqModel): Flow<ResponseModel> {
+        val newNote = Note(
+            id = saveNoteReqModel.id,
+            title = saveNoteReqModel.title,
+            description = saveNoteReqModel.description,
+            date = saveNoteReqModel.date
+        )
+        for (index in notes.indices) {
+            if (notes[index].id == saveNoteReqModel.id) notes[index] = newNote
+        }
+        return flow { ResponseModel(ResponseType.SUCCESS) }
     }
 }

@@ -1,8 +1,10 @@
 package ru.zfix27r.todo.domain
 
-import androidx.lifecycle.LiveData
+import kotlinx.coroutines.flow.Flow
+import ru.zfix27r.todo.domain.model.*
 
 interface Repository {
-    fun getNotes(): LiveData<List<NoteForList>>
-    fun getNote(id: Long): LiveData<NoteForDetail>
+    fun getNotes(): Flow<GetNotesResModel>
+    fun getNote(requestModel: RequestModel): Flow<GetNoteResModel>
+    fun saveNote(saveNoteReqModel: SaveNoteReqModel): Flow<ResponseModel>
 }

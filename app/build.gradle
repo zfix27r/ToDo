@@ -45,8 +45,9 @@ android {
 }
 
 dependencies {
-    implementation 'androidx.preference:preference:1.2.0'
     implementation 'androidx.preference:preference-ktx:1.2.0'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.recyclerview:recyclerview:1.2.1'
     kapt "com.android.databinding:compiler:$databindingVersion"
 
     implementation "androidx.core:core-ktx:$androidxCoreVersion"
@@ -60,6 +61,10 @@ dependencies {
     implementation "androidx.navigation:navigation-fragment-ktx:$androidxNavigationVersion"
     implementation "androidx.navigation:navigation-ui-ktx:$androidxNavigationVersion"
     implementation "androidx.navigation:navigation-dynamic-features-fragment:$androidxNavigationVersion"
+
+    implementation "androidx.room:room-runtime:$androidxRoomVersion"
+    kapt "androidx.room:room-compiler:$androidxRoomVersion"
+    implementation "androidx.room:room-ktx:$androidxRoomVersion"
 
     implementation "com.github.kirich1409:viewbindingpropertydelegate-noreflection:$viewBindingDelegateVersion"
     

@@ -1,78 +1,91 @@
 package ru.zfix27r.todo.ui
 
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.appcompat.widget.Toolbar
 import androidx.core.view.WindowCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
-import androidx.preference.PreferenceManager
-import com.google.android.material.snackbar.Snackbar
+import androidx.navigation.ui.setupWithNavController
+import androidx.preference.PreferenceManager.getDefaultSharedPreferences
+import com.google.android.material.navigation.NavigationView
 import ru.zfix27r.todo.R
 import ru.zfix27r.todo.databinding.ActivityMainBinding
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceChangeListener {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
-    private lateinit var binding: ActivityMainBinding
+    private lateinit var drawer: DrawerLayout
+    private lateinit var toolbar: Toolbar
     private lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         WindowCompat.setDecorFitsSystemWindows(window, false)
         super.onCreate(savedInstanceState)
-
-        binding = ActivityMainBinding.inflate(layoutInflater)
-
-        themeLoader()
+        val binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        setSupportActionBar(binding.toolbar)
+        drawer = findViewById(R.id.drawer_layout)
+        toolbar = findViewById(R.id.main_toolbar)
 
-        val navHost =
-            supportFragmentManager.findFragmentById(R.id.fragment_container) as NavHostFragment
-        navController = navHost.navController
-
-        appBarConfiguration = AppBarConfiguration(navController.graph)
-        setupActionBarWithNavController(navController, appBarConfiguration)
-
-        binding.fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAnchorView(R.id.fab)
-                .setAction("Action", null).show()
-        }
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.menu_main, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.action_settings -> {
-                navController.navigate(R.id.action_global_settings)
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
+        setNavController()
+        setActionBar()
+        setSharedPreferenceListener()
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        return navController.navigateUp() || super.onSupportNavigateUp()
+        return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 
-    private fun themeLoader() {
-        val currentTheme =
-            PreferenceManager.getDefaultSharedPreferences(this)
-                .getString(getString(R.string.theme_key), getString(R.string.theme_default_name))
+    override fun onSharedPreferenceChanged(p0: SharedPreferences?, p1: String?) {
+        if (p1 == getString(R.string.theme_key)) setTheme()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        getDefaultSharedPreferences(this).unregisterOnSharedPreferenceChangeListener(this)
+    }
+
+    private fun setTheme() {
+        val currentTheme = getDefaultSharedPreferences(this).getString(
+            getString(R.string.theme_key),
+            getString(R.string.theme_default_name)
+        )
         val themeLight = getString(R.string.theme_light_name)
         val themeDark = getString(R.string.theme_dark_name)
 
-        if (currentTheme == themeLight) AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-        else if (currentTheme == themeDark) AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        when (currentTheme) {
+            themeLight -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            themeDark -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            else -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+        }
+    }
+
+    private fun setNavController() {
+        val navHost =
+            supportFragmentManager.findFragmentById(R.id.fragment_container) as NavHostFragment
+        navController = navHost.navController
+    }
+
+    private fun setActionBar() {
+        setSupportActionBar(toolbar)
+        appBarConfiguration = AppBarConfiguration(navController.graph, drawer)
+        setupActionBarWithNavController(navController, appBarConfiguration)
+
+        val navView: NavigationView = findViewById(R.id.nav_view)
+        navView.setupWithNavController(navController)
+    }
+
+    private fun setSharedPreferenceListener() {
+        getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(this)
     }
 }

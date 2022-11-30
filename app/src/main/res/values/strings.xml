@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Заметки</string>
     <string name="action_settings">Настройки</string>
+    <string name="action_help">Помощь</string>
 
     <string name="note_add">Добавить заметку</string>
 
@@ -46,4 +47,7 @@
     <string name="reminder_evening_hour_default_value">18</string>
     <string name="reminder_evening_minute_key">settings_reminder_evening_minute_key</string>
     <string name="reminder_evening_minute_default_value">0</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 </resources>
