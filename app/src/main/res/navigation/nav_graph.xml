@@ -3,24 +3,50 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/main">
-    <fragment
-        android:id="@+id/main"
-        android:name="ru.zfix27r.todo.ui.ListFragment"
-        tools:layout="@layout/fragment_list" >
-        <action
-            android:id="@+id/action_main_to_detail"
-            app:destination="@id/detail" />
-    </fragment>
-    <fragment
-        android:id="@+id/detail"
-        android:name="ru.zfix27r.todo.ui.DetailFragment"
-        tools:layout="@layout/fragment_detail" />
-    <fragment
-        android:id="@+id/settings"
-        android:name="ru.zfix27r.todo.ui.SettingsFragment"
-        android:label="@string/action_settings" />
+    app:startDestination="@id/notes">
+
     <action
         android:id="@+id/action_global_settings"
         app:destination="@id/settings" />
+    <action
+        android:id="@+id/action_global_help"
+        app:destination="@id/help" />
+
+    <fragment
+        android:id="@+id/notes"
+        android:name="ru.zfix27r.todo.ui.notes.NotesFragment"
+        android:label=""
+        tools:layout="@layout/fragment_notes">
+        <action
+            android:id="@+id/action_notes_to_note_detail"
+            app:destination="@id/note_detail" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/note_detail"
+        android:name="ru.zfix27r.todo.ui.notes.detail.NoteDetailFragment"
+        android:label=""
+        tools:layout="@layout/fragment_note_detail" >
+        <action
+            android:id="@+id/action_note_detail_to_note_detail_dialog"
+            app:destination="@id/note_detail_dialog" />
+    </fragment>
+
+    <dialog
+        android:id="@+id/note_detail_dialog"
+        android:name="ru.zfix27r.todo.ui.notes.detail.NoteDetailDialogFragment"
+        android:label=""
+        tools:layout="@layout/fragment_note_detail_dialog" />
+
+    <fragment
+        android:id="@+id/settings"
+        android:name="ru.zfix27r.todo.ui.settings.SettingsFragment"
+        android:label="@string/action_settings" />
+
+    <fragment
+        android:id="@+id/help"
+        android:name="ru.zfix27r.todo.ui.help.HelpFragment"
+        android:label=""
+        tools:layout="@layout/fragment_help" />
+
 </navigation>
