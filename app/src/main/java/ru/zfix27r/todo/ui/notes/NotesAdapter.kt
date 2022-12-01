@@ -11,8 +11,7 @@ import ru.zfix27r.todo.databinding.NoteItemBinding
 import ru.zfix27r.todo.ui.notes.NotesAdapter.*
 
 class NotesAdapter(
-    private val actionListener: NotesActionListener,
-    private val contextListener: View.OnCreateContextMenuListener
+    private val actionListener: NotesActionListener
 ) :
     ListAdapter<Note, NotesViewHolder>(DiffCallback()),
     View.OnClickListener {
@@ -24,7 +23,7 @@ class NotesAdapter(
         val binding = NoteItemBinding.inflate(inflater, parent, false)
 
         binding.title.setOnClickListener(this)
-        binding.title.setOnCreateContextMenuListener(contextListener)
+        binding.title.setOnCreateContextMenuListener(actionListener.getContextMenu())
 
         return NotesViewHolder(binding)
     }
@@ -47,7 +46,7 @@ class NotesAdapter(
     override fun onClick(v: View) {
         val note = v.tag as Note
         when (v.id) {
-            R.id.title -> actionListener.onDetail(note)
+            R.id.title -> actionListener.onViewDetail(note)
         }
     }
 }
