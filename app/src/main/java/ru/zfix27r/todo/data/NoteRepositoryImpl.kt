@@ -2,11 +2,12 @@ package ru.zfix27r.todo.data
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import ru.zfix27r.todo.domain.Repository
-import ru.zfix27r.todo.domain.common.ResponseType
+import ru.zfix27r.todo.domain.NoteRepository
+import ru.zfix27r.todo.domain.common.ResponseType.*
+import ru.zfix27r.todo.domain.common.SortType
 import ru.zfix27r.todo.domain.model.*
 
-class RepositoryImpl : Repository {
+class NoteRepositoryImpl : NoteRepository {
     private val notes: MutableList<Note> = mutableListOf(
         Note(
             id = 1,
@@ -29,13 +30,21 @@ class RepositoryImpl : Repository {
     )
 
 
-    override fun getNotes(): Flow<GetNotesResModel> {
+    override fun getNotes(getNotesReqModel: GetNotesReqModel): Flow<GetNotesResModel> {
         return flow {
-            emit(
-                GetNotesResDataModel(
-                    notes.map { GetNotesResDataModel.Note(id = it.id, title = it.title) }
+            val result = when (getNotesReqModel.sortType) {
+                SortType.ABC -> notes.sortedBy { it.title }
+                SortType.ABC_REVERSE -> notes.sortedBy { it.title }.reversed()
+                SortType.DATE -> notes.sortedBy { it.date }
+                else -> notes
+            }
+
+            emit(GetNotesResDataModel(result.map {
+                GetNotesResDataModel.Note(
+                    id = it.id,
+                    title = it.title
                 )
-            )
+            }))
         }
     }
 
@@ -61,8 +70,23 @@ class RepositoryImpl : Repository {
             date = saveNoteReqModel.date
         )
         for (index in notes.indices) {
-            if (notes[index].id == saveNoteReqModel.id) notes[index] = newNote
+            if (notes[index].id == saveNoteReqModel.id) {
+                notes[index] = newNote
+                return flow { emit(ResponseModel(SUCCESS)) }
+            }
         }
-        return flow { ResponseModel(ResponseType.SUCCESS) }
+
+        return flow { emit(ResponseModel(UNKNOWN_ERROR)) }
+    }
+
+    override fun deleteNote(requestModel: RequestModel): Flow<ResponseModel> {
+        for (note: Note in notes) {
+            if (note.id == requestModel.id) {
+                notes.remove(note)
+                return flow { emit(ResponseModel(SUCCESS_AND_BACK)) }
+            }
+        }
+
+        return flow { emit(ResponseModel(UNKNOWN_ERROR)) }
     }
 }
