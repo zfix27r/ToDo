@@ -9,8 +9,7 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.google.android.material.snackbar.Snackbar
 import ru.zfix27r.todo.R
 import ru.zfix27r.todo.databinding.FragmentNoteDetailBinding
-import ru.zfix27r.todo.domain.common.ResponseType
-import ru.zfix27r.todo.domain.common.ResponseType.*
+import ru.zfix27r.todo.domain.common.ResponseType.SUCCESS_AND_BACK
 import ru.zfix27r.todo.ui.notes.NotesFragment.Companion.ACTION_DELETE
 import ru.zfix27r.todo.ui.notes.NotesFragment.Companion.ACTION_UPDATE
 
@@ -25,7 +24,6 @@ class NoteDetailFragment : Fragment(R.layout.fragment_note_detail) {
 
         observeActions()
         observeResponse()
-        listenEdit()
         listenDialog()
     }
 
@@ -45,19 +43,9 @@ class NoteDetailFragment : Fragment(R.layout.fragment_note_detail) {
                     findNavController().popBackStack()
                 }
                 else -> Snackbar.make(
-                    binding.root, getString(R.string.error_unknow), Snackbar.LENGTH_SHORT
+                    binding.root, getString(R.string.error_unknown), Snackbar.LENGTH_SHORT
                 ).show()
             }
-        }
-    }
-
-    private fun listenEdit() {
-        binding.title.setOnFocusChangeListener { _, b ->
-            if (!b) viewModel.noteEdit.title = binding.title.text.toString()
-        }
-
-        binding.description.setOnFocusChangeListener { _, b ->
-            if (!b) viewModel.noteEdit.description = binding.description.text.toString()
         }
     }
 
@@ -67,8 +55,14 @@ class NoteDetailFragment : Fragment(R.layout.fragment_note_detail) {
         }
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
+    override fun onPause() {
+        super.onPause()
+        saveNote()
+    }
+
+    private fun saveNote() {
+        viewModel.noteEdit.title = binding.title.text.toString()
+        viewModel.noteEdit.description = binding.description.text.toString()
         viewModel.saveNote()
     }
 }

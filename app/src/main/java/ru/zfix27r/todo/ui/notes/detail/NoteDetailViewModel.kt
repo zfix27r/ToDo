@@ -7,6 +7,7 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import ru.zfix27r.todo.ToDo
+import ru.zfix27r.todo.binding.BindingAdapters.DATE_PATTERN_SAVE
 import ru.zfix27r.todo.domain.model.GetNoteResModel
 import ru.zfix27r.todo.domain.model.RequestModel
 import ru.zfix27r.todo.domain.model.ResponseModel
@@ -15,6 +16,8 @@ import ru.zfix27r.todo.domain.usecase.DeleteNoteUseCase
 import ru.zfix27r.todo.domain.usecase.GetNoteUseCase
 import ru.zfix27r.todo.domain.usecase.SaveNoteUseCase
 import ru.zfix27r.todo.ui.notes.NotesViewModel.Companion.NOTE_ID
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 class NoteDetailViewModel(
     private val getNoteUseCase: GetNoteUseCase,
@@ -49,15 +52,20 @@ class NoteDetailViewModel(
     }
 
     fun saveNote() {
-        note.value?.let {
+        note.value?.let { it ->
+            if (noteEdit.title == it.title && noteEdit.description == it.description) return
+
             viewModelScope.launch(Dispatchers.IO) {
+                val formatter = DateTimeFormatter.ofPattern(DATE_PATTERN_SAVE)
+
                 val saveNoteReqModel = SaveNoteReqModel(
                     id = noteId,
                     title = noteEdit.title ?: it.title,
-                    description = noteEdit.description ?: it.description
+                    description = noteEdit.description ?: it.description,
+                    date = LocalDateTime.now().format(formatter).toString()
                 )
-                saveNoteUseCase.execute(saveNoteReqModel).collect {
-                    _response.postValue(it)
+                saveNoteUseCase.execute(saveNoteReqModel).collect { response ->
+                    _response.postValue(response)
                 }
             }
         }

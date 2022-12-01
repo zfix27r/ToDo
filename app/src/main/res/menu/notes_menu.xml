@@ -1,10 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/sort"
         android:icon="@drawable/ic_baseline_sort_24"
-        android:title="Сортировка"
-        app:showAsAction="always" />
-
+        android:title="@string/notes_menu_sort">
+        <menu>
+            <item
+                android:id="@+id/sort_created_at"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:title="@string/notes_menu_sort_created_at" />
+            <item
+                android:id="@+id/sort_created_at_reverse"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:title="@string/notes_menu_sort_created_at_reverse" />
+            <item
+                android:id="@+id/sort_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:title="@string/notes_menu_sort_title" />
+            <item
+                android:id="@+id/sort_title_reverse"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:title="@string/notes_menu_sort_title_reverse" />
+            <item
+                android:id="@+id/sort_update_at"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:title="@string/notes_menu_sort_updated_at" />
+            <item
+                android:id="@+id/sort_update_at_reverse"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:title="@string/notes_menu_sort_updated_at_reverse" />
+        </menu>
+    </item>
 </menu>

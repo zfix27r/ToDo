@@ -52,10 +52,14 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="item_delete">Удалить</string>
 
+    <string name="notes_menu_sort">Сортировка</string>
     <string name="notes_menu_sort_key">notes_menu_sort</string>
-    <string name="notes_menu_sort_default">По умолчанию</string>
-    <string name="notes_menu_sort_alphabetically">По порядку</string>
-    <string name="notes_menu_sort_alphabetically_reverse">В обраном порядке</string>
-    <string name="notes_menu_sort_date">По дате обновления</string>
-    <string name="error_unknow">Неизвестная ошибка</string>
+    <string name="notes_menu_sort_created_at">Дата добавления</string>
+    <string name="notes_menu_sort_created_at_reverse">Дата добавления с конца</string>
+    <string name="notes_menu_sort_title">Заголовок</string>
+    <string name="notes_menu_sort_title_reverse">Заголовок с конца</string>
+    <string name="notes_menu_sort_updated_at">Дата изменения</string>
+    <string name="notes_menu_sort_updated_at_reverse">Дата изменения с конца</string>
+
+    <string name="error_unknown">Неизвестная ошибка</string>
 </resources>
