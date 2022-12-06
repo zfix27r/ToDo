@@ -1,17 +1,13 @@
 package ru.zfix27r.todo
 
 import android.app.Application
+import dagger.hilt.android.HiltAndroidApp
 import ru.zfix27r.todo.data.NoteRepositoryImpl
-import ru.zfix27r.todo.data.PreferenceRepositoryImpl
-import ru.zfix27r.todo.domain.NoteRepository
-import ru.zfix27r.todo.domain.PreferenceRepository
+import ru.zfix27r.todo.data.local.entity.NoteDbEntity
 
+@HiltAndroidApp
 class ToDo : Application() {
-    val noteRepository: NoteRepository = NoteRepositoryImpl()
-    lateinit var preferenceRepository: PreferenceRepository
-
     override fun onCreate() {
         super.onCreate()
-        preferenceRepository = PreferenceRepositoryImpl(applicationContext)
     }
 }

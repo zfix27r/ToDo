@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:drawablePadding="16dp"
         android:padding="16dp"
-        android:text="@string/item_delete"
+        android:text="@string/item_action_delete"
         android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
         app:drawableStartCompat="@drawable/ic_baseline_delete_forever_24"
         app:layout_constraintEnd_toEndOf="parent"

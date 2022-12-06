@@ -2,9 +2,8 @@ package ru.zfix27r.todo.ui
 
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
 import android.view.View
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.Toolbar
@@ -17,10 +16,14 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.preference.PreferenceManager.getDefaultSharedPreferences
+import com.google.android.material.bottomappbar.BottomAppBar
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
+import dagger.hilt.android.AndroidEntryPoint
 import ru.zfix27r.todo.R
 import ru.zfix27r.todo.databinding.ActivityMainBinding
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceChangeListener {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
@@ -53,6 +56,28 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
     override fun onDestroy() {
         super.onDestroy()
         getDefaultSharedPreferences(this).unregisterOnSharedPreferenceChangeListener(this)
+    }
+
+    fun showBottomAppBar() {
+        findViewById<BottomAppBar>(R.id.bottom).visibility = View.VISIBLE
+    }
+
+    fun hideBottomAppBar() {
+        findViewById<BottomAppBar>(R.id.bottom).visibility = View.GONE
+    }
+
+    fun showBottomAppBarWithFab() {
+        showBottomAppBar()
+        findViewById<FloatingActionButton>(R.id.fab).show()
+    }
+
+    fun hideBottomAppBarWithFab() {
+        hideBottomAppBar()
+        findViewById<FloatingActionButton>(R.id.fab).hide()
+    }
+
+    fun setTitleBottomAppBar(title: String = "") {
+        findViewById<TextView>(R.id.bottom_title).text = title
     }
 
     private fun setTheme() {

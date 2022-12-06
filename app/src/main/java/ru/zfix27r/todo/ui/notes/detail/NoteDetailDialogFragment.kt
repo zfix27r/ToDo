@@ -7,7 +7,7 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import ru.zfix27r.todo.R
 import ru.zfix27r.todo.databinding.FragmentNoteDetailDialogBinding
-import ru.zfix27r.todo.ui.notes.NotesFragment.Companion.ACTION_DELETE
+import ru.zfix27r.todo.ui.notes.detail.NoteDetailFragment.Companion.ACTION_DELETE
 
 class NoteDetailDialogFragment : BottomSheetDialogFragment(R.layout.fragment_note_detail_dialog) {
 
