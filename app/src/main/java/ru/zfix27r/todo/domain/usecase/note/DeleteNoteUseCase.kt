@@ -1,9 +1,9 @@
-package ru.zfix27r.todo.domain.usecase
+package ru.zfix27r.todo.domain.usecase.note
 
 import ru.zfix27r.todo.domain.NoteRepository
 import ru.zfix27r.todo.domain.model.RequestModel
-import ru.zfix27r.todo.domain.model.SaveNoteReqModel
+import javax.inject.Inject
 
-class DeleteNoteUseCase(private val repo: NoteRepository) {
+class DeleteNoteUseCase @Inject constructor(private val repo: NoteRepository) {
     suspend fun execute(requestModel: RequestModel) = repo.deleteNote(requestModel)
 }

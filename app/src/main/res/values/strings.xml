@@ -50,7 +50,7 @@
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="item_delete">Удалить</string>
+    <string name="item_action_delete">Удалить</string>
 
     <string name="notes_menu_sort">Сортировка</string>
     <string name="notes_menu_sort_key">notes_menu_sort</string>
@@ -62,4 +62,11 @@
     <string name="notes_menu_sort_updated_at_reverse">Дата изменения с конца</string>
 
     <string name="error_unknown">Неизвестная ошибка</string>
+    <string name="error_note_get_fail">Неудалось получить заметку</string>
+    <string name="error_note_delete_fail">Неудалось удалить заметку</string>
+
+    <string name="note_detail_bottom_action_bar_title">Последнее изменение:</string>
+    <string name="item_actions">Действия</string>
+    <string name="note_empty_delete">Пустая заметка удалена</string>
+    <string name="error_note_save_fail">Неудалось сохранить заметку</string>
 </resources>

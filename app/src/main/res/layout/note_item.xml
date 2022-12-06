@@ -7,7 +7,7 @@
 
         <variable
             name="note"
-            type="ru.zfix27r.todo.domain.model.GetNotesResDataModel.Note" />
+            type="ru.zfix27r.todo.domain.model.notes.GetNotesDataResModel.Note" />
     </data>
 
     <androidx.cardview.widget.CardView

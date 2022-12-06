@@ -1,10 +1,11 @@
-package ru.zfix27r.todo.domain.model
+package ru.zfix27r.todo.domain.model.notes
 
 import ru.zfix27r.todo.domain.common.ResponseType
+import ru.zfix27r.todo.domain.model.ResponseModel
 
 sealed class GetNotesResModel
 
-data class GetNotesResDataModel(
+data class GetNotesDataResModel(
     val notes: List<Note>
 ) : GetNotesResModel() {
     data class Note(
@@ -13,6 +14,6 @@ data class GetNotesResDataModel(
     )
 }
 
-data class GetNotesResTypeModel(val responseType: ResponseType) : GetNotesResModel() {
+data class GetNotesTypeResModel(val responseType: ResponseType) : GetNotesResModel() {
     fun toResponseModel() = ResponseModel(responseType)
 }

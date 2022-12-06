@@ -3,6 +3,7 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-kapt'
     id 'androidx.navigation.safeargs.kotlin'
+    id 'dagger.hilt.android.plugin'
 }
 
 android {
@@ -65,6 +66,9 @@ dependencies {
     implementation "androidx.room:room-runtime:$androidxRoomVersion"
     kapt "androidx.room:room-compiler:$androidxRoomVersion"
     implementation "androidx.room:room-ktx:$androidxRoomVersion"
+
+    implementation "com.google.dagger:hilt-android:$hiltVersion"
+    kapt "com.google.dagger:hilt-android-compiler:$hiltVersion"
 
     implementation "com.github.kirich1409:viewbindingpropertydelegate-noreflection:$viewBindingDelegateVersion"
     

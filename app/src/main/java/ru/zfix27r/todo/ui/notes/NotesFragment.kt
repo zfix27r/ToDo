@@ -1,12 +1,7 @@
 package ru.zfix27r.todo.ui.notes
 
-import android.content.res.Configuration
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
-import android.view.SubMenu
-import android.view.View
+import android.view.*
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.os.bundleOf
 import androidx.core.view.MenuProvider
@@ -16,19 +11,21 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import dagger.hilt.android.AndroidEntryPoint
 import ru.zfix27r.todo.R
 import ru.zfix27r.todo.databinding.FragmentNotesBinding
 import ru.zfix27r.todo.domain.common.SortType
-import ru.zfix27r.todo.domain.model.GetNotesResDataModel
+import ru.zfix27r.todo.domain.model.notes.GetNotesDataResModel
+import ru.zfix27r.todo.ui.MainActivity
 import ru.zfix27r.todo.ui.notes.NotesViewModel.Companion.NOTE_ID
-import ru.zfix27r.todo.ui.notes.detail.NoteDetailFragment
 
+typealias Note = GetNotesDataResModel.Note
 
-typealias Note = GetNotesResDataModel.Note
-
+@AndroidEntryPoint
 class NotesFragment : Fragment(R.layout.fragment_notes) {
     private val binding by viewBinding(FragmentNotesBinding::bind)
-    private val viewModel by viewModels<NotesViewModel> { NotesViewModel.Factory }
+    private val viewModel by viewModels<NotesViewModel>()
     private val adapter = NotesAdapter(onListenAction())
 
     private var sortPopupMenu: PopupMenu? = null
@@ -37,23 +34,36 @@ class NotesFragment : Fragment(R.layout.fragment_notes) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.recycler.adapter = adapter
-        setMenu()
-        observeActions()
+
+        provideTopMenu()
         observeNotes()
+        observeNewNoteId()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        resumeCustomBottomBar()
+    }
+
+    private fun resumeCustomBottomBar() {
+        val activity = activity as MainActivity
+        activity.showBottomAppBarWithFab()
+        activity.findViewById<FloatingActionButton>(R.id.fab).setOnClickListener {
+            viewModel.addNote()
+        }
     }
 
     override fun onPause() {
         super.onPause()
         viewModel.savedState()
-
         sortPopupMenu = null
+        pauseCustomBottomBar()
     }
 
-    private fun observeActions() {
-        findNavController().currentBackStackEntry?.savedStateHandle
-            ?.getLiveData<Boolean>(ACTION_UPDATE)?.observe(viewLifecycleOwner) {
-                if (it) viewModel.loadNotes()
-            }
+    private fun pauseCustomBottomBar() {
+        val activity = activity as MainActivity
+        activity.hideBottomAppBarWithFab()
+        activity.findViewById<FloatingActionButton>(R.id.fab).setOnClickListener(null)
     }
 
     private fun observeNotes() {
@@ -62,10 +72,24 @@ class NotesFragment : Fragment(R.layout.fragment_notes) {
         }
     }
 
+    private fun observeNewNoteId() {
+        viewModel.newNoteId.observe(viewLifecycleOwner) {
+            // TODO изменить способ уведомления о создании новой записи
+            viewModel.resetNewNoteId()
+            findNavController().navigate(
+                R.id.action_notes_to_note_detail,
+                bundleOf(NOTE_ID to it.id, IS_NEW_NOTE to true)
+            )
+        }
+    }
+
     private fun onListenAction(): NotesActionListener {
         return object : NotesActionListener {
             override fun onViewDetail(note: Note) {
-                if (isLandscape()) showLandDetail(note) else showDetail(note)
+                findNavController().navigate(
+                    R.id.action_notes_to_note_detail,
+                    bundleOf(NOTE_ID to note.id)
+                )
             }
 
             override fun getContextMenu(): View.OnCreateContextMenuListener {
@@ -73,10 +97,11 @@ class NotesFragment : Fragment(R.layout.fragment_notes) {
                     menu?.let {
                         v?.let {
                             val note = v.tag as Note
-                            val delete = menu.add(0, v.id, 0, getString(R.string.item_delete))
+                            val delete =
+                                menu.add(0, v.id, 0, getString(R.string.item_action_delete))
 
                             delete.setOnMenuItemClickListener {
-                                viewModel.deleteNote(note)
+                                viewModel.deleteNote(note.id)
                                 return@setOnMenuItemClickListener true
                             }
                         }
@@ -86,30 +111,10 @@ class NotesFragment : Fragment(R.layout.fragment_notes) {
         }
     }
 
-    private fun isLandscape(): Boolean {
-        return resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
-    }
-
-    private fun showDetail(note: Note) {
-        findNavController().navigate(R.id.action_notes_to_note_detail, bundleOf(NOTE_ID to note.id))
-    }
-
-    private fun showLandDetail(note: Note) {
-        // TODO Как реализовать на Navigation Components?
-        val detailFragment = NoteDetailFragment()
-        detailFragment.arguments = bundleOf(NOTE_ID to note.id)
-
-        requireActivity()
-            .supportFragmentManager
-            .beginTransaction()
-            .replace(R.id.fragment_container_detail, detailFragment)
-            .commit()
-    }
-
-    private fun setMenu() {
+    private fun provideTopMenu() {
         requireActivity().addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                menuInflater.inflate(R.menu.notes_menu, menu)
+                menuInflater.inflate(R.menu.notes_top_menu, menu)
 
                 menu.getItem(0).subMenu?.let {
                     sortPopupMenuActiveItem = getActiveItemSortMenu(it)
@@ -164,7 +169,6 @@ class NotesFragment : Fragment(R.layout.fragment_notes) {
     }
 
     companion object {
-        const val ACTION_UPDATE = "action_update"
-        const val ACTION_DELETE = "action_delete"
+        const val IS_NEW_NOTE = "is_new_note"
     }
 }

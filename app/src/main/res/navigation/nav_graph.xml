@@ -7,7 +7,7 @@
 
     <action
         android:id="@+id/action_global_settings"
-        app:destination="@id/settings" />
+        app:destination="@id/action_delete" />
     <action
         android:id="@+id/action_global_help"
         app:destination="@id/help" />
@@ -39,7 +39,7 @@
         tools:layout="@layout/fragment_note_detail_dialog" />
 
     <fragment
-        android:id="@+id/settings"
+        android:id="@+id/action_delete"
         android:name="ru.zfix27r.todo.ui.settings.SettingsFragment"
         android:label="@string/action_settings" />
 
