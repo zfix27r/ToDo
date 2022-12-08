@@ -69,4 +69,6 @@
     <string name="item_actions">Действия</string>
     <string name="note_empty_delete">Пустая заметка удалена</string>
     <string name="error_note_save_fail">Неудалось сохранить заметку</string>
+    <string name="note_item_title_hint">Заголовок</string>
+    <string name="note_item_description_hint">Текст</string>
 </resources>

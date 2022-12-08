@@ -16,6 +16,7 @@
         tools:context="ru.zfix27r.todo.ui.notes.detail.NoteDetailFragment">
 
         <EditText
+            android:hint="@string/note_item_title_hint"
             android:id="@+id/title"
             style="@style/Widget.Material3.TextInputEditText.OutlinedBox.Dense"
             android:layout_width="0dp"
@@ -37,6 +38,7 @@
             tools:text="Активити" />
 
         <EditText
+            android:hint="@string/note_item_description_hint"
             android:id="@+id/description"
             style="@style/Widget.Material3.TextInputEditText.OutlinedBox.Dense"
             android:layout_width="0dp"
@@ -53,7 +55,7 @@
             android:paddingRight="8dp"
             android:paddingBottom="7dp"
             android:text="@{ viewModel.note.description }"
-            android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+            android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
